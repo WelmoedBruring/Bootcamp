@@ -17,3 +17,9 @@ C:\BootcampCode\Bootcamp\cs\Bootcamp\Bootcamp\bin\Debug\WebDriver.xml
 C:\BootcampCode\Bootcamp\cs\Bootcamp\Bootcamp\bin\Debug\WebDriver.Support.xml
 C:\BootcampCode\Bootcamp\cs\Bootcamp\Bootcamp\bin\Debug\NFluent.dll
 C:\BootcampCode\Bootcamp\cs\Bootcamp\Bootcamp\bin\Debug\NFluent.xml
+C:\BootcampCode\Bootcamp\cs\Bootcamp\Bootcamp\bin\Debug\FluentAssertions.Core.dll
+C:\BootcampCode\Bootcamp\cs\Bootcamp\Bootcamp\bin\Debug\FluentAssertions.dll
+C:\BootcampCode\Bootcamp\cs\Bootcamp\Bootcamp\bin\Debug\FluentAssertions.pdb
+C:\BootcampCode\Bootcamp\cs\Bootcamp\Bootcamp\bin\Debug\FluentAssertions.xml
+C:\BootcampCode\Bootcamp\cs\Bootcamp\Bootcamp\bin\Debug\FluentAssertions.Core.pdb
+C:\BootcampCode\Bootcamp\cs\Bootcamp\Bootcamp\bin\Debug\FluentAssertions.Core.xml

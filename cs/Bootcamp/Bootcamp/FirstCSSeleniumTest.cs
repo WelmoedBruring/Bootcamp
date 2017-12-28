@@ -1,4 +1,5 @@
 ﻿using System;
+using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 //using NFluent;
 using OpenQA.Selenium;
@@ -33,10 +34,11 @@ namespace Bootcamp
             String actualPageHeading = driver.FindElement(By.ClassName("page-heading")).Text;
             String expectedPageHeading = "MY ACCOUNT";
             //Check.That(actualPageHeading).Equals(expectedPageHeading);
+            actualPageHeading.Should().Be(expectedPageHeading, "the My Account page should be displayed");
 
-            Assert.AreEqual(actualPageHeading, expectedPageHeading);
+            //Assert.AreEqual(actualPageHeading, expectedPageHeading);
 
-            // Termiate the browser
+            // Terminate the browser
             driver.Quit();
 
         }

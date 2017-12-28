@@ -53,21 +53,21 @@ public class SignOutTest {
         driver.findElement(By.id("SubmitLogin")).click();
 
         // Check that the My Account-page is opened
-        String acountPageHeading = driver.findElement(By.className("page-heading"))
+        String signOutButtonText = driver.findElement(By.className("logout"))
                 .getText();
-        Assertions.assertThat(acountPageHeading)
-                .as("My Account page should be displayed")
-                .isEqualToIgnoringCase("MY ACCOUNT");
+        Assertions.assertThat(signOutButtonText)
+                .as("Sign out button should be displayed")
+                .isEqualToIgnoringCase("SIGN OUT");
 
         // Find and click the logout button
         driver.findElement(By.className("logout")).click();
 
         // Check that the logout is succesful and the authentication page is opened
-        authenticationHeading = driver.findElement(By.className("page-heading"))
+        String signInButtonText = driver.findElement(By.className("login"))
                 .getText();
-        Assertions.assertThat(authenticationHeading)
-                .as("Authentication page should be displayed")
-                .isEqualToIgnoringCase("AUTHENTICATION");
+        Assertions.assertThat(signInButtonText)
+                .as("Sign in button should be displayed")
+                .isEqualToIgnoringCase("SIGN IN");
     }
 
     @AfterMethod

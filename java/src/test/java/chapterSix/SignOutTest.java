@@ -1,29 +1,12 @@
 package chapterSix;
 
-import io.github.bonigarcia.wdm.ChromeDriverManager;
 import org.assertj.core.api.Assertions;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-public class SignOutTest {
+public class SignOutTest extends TestShopScenario {
 
-    WebDriver driver;
-    String authenticationHeading;
-
-    @BeforeMethod
-    public void setUp() {
-
-        // Start browser
-        ChromeDriverManager.getInstance().setup();
-        driver = new ChromeDriver();
-
-        // Maximize browser window
-        driver.manage().window().maximize();
-    }
+    private String authenticationHeading;
 
     @Test
     private void signOutTest() {
@@ -68,11 +51,5 @@ public class SignOutTest {
         Assertions.assertThat(signInButtonText)
                 .as("Sign in button should be displayed")
                 .isEqualToIgnoringCase("SIGN IN");
-    }
-
-    @AfterMethod
-    public void cleanUp() {
-
-        driver.quit();
     }
 }

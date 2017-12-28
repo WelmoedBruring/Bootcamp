@@ -34,6 +34,6 @@ public class TestShopScenario {
     @AfterMethod
     public void harikiri() {
 
-        driver.quit();
+        //driver.quit();
     }
 }

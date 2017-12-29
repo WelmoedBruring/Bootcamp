@@ -5,7 +5,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.annotations.Test;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +33,6 @@ public class ValidateSupplierProductTest extends TestShopScenario {
         System.out.println(productNames);
 
         // Assert that 'MacBook Air' is in the productNames list
-        Assertions.assertThat(productNames.contains("MacBook Air"));
+        Assertions.assertThat(productNames).as("List should contain 'MacBook Air'").contains("MacBook Air");
     }
 }

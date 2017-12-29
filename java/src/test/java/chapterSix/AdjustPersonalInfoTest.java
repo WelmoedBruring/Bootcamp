@@ -12,7 +12,7 @@ public class AdjustPersonalInfoTest extends TestShopScenario {
     private String authenticationHeading;
     private String initialName = "Welmoed";
     private String changedName = "Tester";
-    private String nameBeforeChange;
+    private String nameAfterChange;
     private String password = "testw8woord";
 
     @Test
@@ -44,15 +44,6 @@ public class AdjustPersonalInfoTest extends TestShopScenario {
 
         List<WebElement> pageHeadings = driver.findElements(By.className("page-heading"));
 
-        /** Checks whether the next if-statement works
-        List<String> string = new ArrayList<String>();
-        for (int i = 0; i < pageHeadings.size(); i++ ) {
-            String title = pageHeadings.get(i).getText();
-            string.add(title);
-        }
-
-        System.out.println(string);**/
-
         // If the pageHeadings-list is empty OR the pageHeadings list is not empty but the pageHeading found is not
         // 'MY ACCOUNT' then go to the MY ACCOUNT page
         if (pageHeadings.size()==0
@@ -69,11 +60,11 @@ public class AdjustPersonalInfoTest extends TestShopScenario {
         // Change name
         WebElement firstName = driver.findElement(By.cssSelector("#firstname"));
         if (firstName.getAttribute("value").equals(initialName)) {
-            nameBeforeChange = initialName;
+            nameAfterChange = changedName;
             firstName.clear();
             firstName.sendKeys(changedName);
         } else {
-            nameBeforeChange  = changedName;
+            nameAfterChange  = initialName;
             firstName.clear();
             firstName.sendKeys(initialName);
         }
@@ -82,6 +73,7 @@ public class AdjustPersonalInfoTest extends TestShopScenario {
 
         // Validate successmessage
         String successMessage = driver.findElement(By.className("alert-success")).getText();
-        Assertions.assertThat(successMessage.contains("Your personal information has been successfully updated."));
+        Assertions.assertThat(successMessage).contains("Your personal information has been successfully updated.");
+        Assertions.assertThat(driver.findElement(By.className("account")).getText()).isEqualTo(nameAfterChange + " Bruring");
     }
 }

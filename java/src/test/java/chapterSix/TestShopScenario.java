@@ -1,8 +1,7 @@
 package chapterSix;
 
-import io.github.bonigarcia.wdm.ChromeDriverManager;
+import browser.BrowserFactory;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -11,14 +10,11 @@ public class TestShopScenario {
 
     protected WebDriver driver;
     protected WebDriverWait wait;
-    protected String URL = "https://techblog.polteq.com/testshop/index.php";
+    private String URL = "https://techblog.polteq.com/testshop/index.php";
 
     @BeforeMethod
-    public void spawn() {
-
-        // Open new driver
-        ChromeDriverManager.getInstance().setup();
-        driver = new ChromeDriver();
+    public void setUp() {
+        driver = BrowserFactory.getDriver("Chrome");
 
         // Maximize browser window
         driver.manage().window().maximize();
@@ -28,12 +24,10 @@ public class TestShopScenario {
 
         // Open the website
         driver.get(URL);
-
     }
 
     @AfterMethod
-    public void harikiri() {
-
-        //driver.quit();
+    public void cleanUp() {
+        driver.quit();
     }
 }

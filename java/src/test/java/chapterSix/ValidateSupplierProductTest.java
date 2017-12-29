@@ -12,7 +12,6 @@ public class ValidateSupplierProductTest extends TestShopScenario {
 
     @Test
     public void validateSupplierProductTest() {
-
         // Select AppleStore from supplier list drop-down
         Select supplierList = new Select(driver.findElement(By.name("supplier_list")));
         supplierList.selectByVisibleText("AppleStore");

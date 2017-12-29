@@ -1,8 +1,7 @@
 package exercises;
 
-import org.testng.annotations.Test;
 import org.assertj.core.api.Assertions;
-import org.testng.asserts.Assertion;
+import org.testng.annotations.Test;
 
 public class AssertionsTest {
 

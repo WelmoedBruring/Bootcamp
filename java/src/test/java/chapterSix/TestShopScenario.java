@@ -28,6 +28,6 @@ public class TestShopScenario {
 
     @AfterMethod
     public void cleanUp() {
-        driver.quit();
+        //driver.quit();
     }
 }

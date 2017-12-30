@@ -73,7 +73,6 @@ public class WishListPage {
                 break;
             }
         }
-
         return index;
     }
 

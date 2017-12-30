@@ -1,11 +1,9 @@
 package pages;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -52,6 +50,7 @@ public class WishListPage {
             driver.switchTo().alert().accept();
             wait.until(ExpectedConditions.not(ExpectedConditions.alertIsPresent()));
             driver.navigate().refresh();
+            waitForJavaScriptToLoad();
         } else {
             throw new NoSuchElementException("The wishlist you want to delete does not exist!");
         }
@@ -84,5 +83,19 @@ public class WishListPage {
         List<WebElement> rows = driver.findElements(By.xpath("//tbody/tr"));
         System.out.println("There are " + rows.size() + " rows");
         return rows.size();
+    }
+
+    public boolean waitForJavaScriptToLoad() {
+        WebDriverWait wait = new WebDriverWait(driver, 30);
+
+        ExpectedCondition<Boolean> jsLoad = new ExpectedCondition<Boolean>() {
+            @Override
+            public Boolean apply(WebDriver driver) {
+                return ((JavascriptExecutor) driver).executeScript("return document.readyState")
+                        .toString().equals("complete");
+            }
+        };
+
+        return wait.until(jsLoad);
     }
 }

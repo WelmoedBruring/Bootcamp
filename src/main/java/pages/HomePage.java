@@ -12,6 +12,9 @@ public class HomePage {
     @FindBy(id="contact-link")
     private WebElement contactButton;
 
+    @FindBy(className="login")
+    private WebElement signInButton;
+
     public HomePage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
@@ -20,5 +23,10 @@ public class HomePage {
     public ContactUsPage goToContactUsPage() {
         contactButton.click();
         return new ContactUsPage(driver);
+    }
+
+    public AuthenticationPage goToAuthenticationPage() {
+        signInButton.click();
+        return new AuthenticationPage(driver);
     }
 }

@@ -4,36 +4,38 @@ import io.github.bonigarcia.wdm.ChromeDriverManager;
 import io.github.bonigarcia.wdm.FirefoxDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 public class BrowserFactory {
 
-    // Moet static omdat getDriver ook static is
-    static WebDriver driver;
+    public enum Browser {
+        FIREFOX,
+        CHROME;
+    }
 
     // Static: hoef je niet te instantiëren omdat het geen blauwdruk is
-    public static WebDriver getDriver(String browser) {
-        switch(browser.toUpperCase()) {
-            case "FIREFOX":
-                driver = getFirefoxDriver();
-                break;
-            case "CHROME":
-                driver = getChromeDriver();
-                break;
-            default:
-                driver = getChromeDriver();
-                break;
+    public static WebDriver getDriver(Browser browser) {
+        switch(browser) {
+            case FIREFOX:
+                return getFirefoxDriver();
+            case CHROME: default:
+                return getChromeDriver();
         }
-        return driver;
     }
 
     private static WebDriver getChromeDriver() {
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("start-maximized","ignore-certificate-errors");
         ChromeDriverManager.getInstance().setup();
-        return driver = new ChromeDriver();
+        return new ChromeDriver(options);
+
     }
 
     private static WebDriver getFirefoxDriver() {
+        DesiredCapabilities capabilities = DesiredCapabilities.firefox();
         FirefoxDriverManager.getInstance().setup();
-        return driver = new FirefoxDriver();
+        return new FirefoxDriver(capabilities);
     }
 }

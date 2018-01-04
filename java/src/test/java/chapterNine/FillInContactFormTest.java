@@ -9,7 +9,6 @@ import pages.HomePage;
 public class FillInContactFormTest extends TestShopScenario{
 
     // VARIABLES
-    private String SUBJECT = "Customer service";
     private String EMAIL = "bootcamper@feelthepain.com";
     private String ORDER_REFERENCE = "4321234";
     private String MESSAGE = "Ipod defect while lifting, need new one";
@@ -24,7 +23,7 @@ public class FillInContactFormTest extends TestShopScenario{
         homePage = new HomePage(driver);
         contactUsPage = homePage.goToContactUsPage();
         contactUsPage.submitForm(
-                SUBJECT,
+                ContactUsPage.SubjectHeading.CUSTOMER_SERVICE,
                 EMAIL,
                 ORDER_REFERENCE,
                 MESSAGE);

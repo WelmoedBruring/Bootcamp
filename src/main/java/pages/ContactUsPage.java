@@ -6,9 +6,17 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
-public class ContactUsPage {
+public class ContactUsPage extends BasePage {
 
-    private WebDriver driver;
+    private boolean formErrorPresent;
+
+    public enum SubjectHeading {
+        CUSTOMER_SERVICE,
+        WEBMASTER;
+    }
+
+    @FindBy(css = ".alert.alert-danger")
+    private WebElement error;
 
     @FindBy(id="id_contact")
     private WebElement select;
@@ -28,28 +36,69 @@ public class ContactUsPage {
     @FindBy(className = "alert-success")
     private WebElement successMessage;
 
+    @FindBy(css = ".form-error")
+    private WebElement formError;
+
     public ContactUsPage(WebDriver driver) {
-        this.driver = driver;
+        super.driver = driver;
         PageFactory.initElements(driver, this);
     }
 
-    public void submitForm(String subject, String email, String reference, String message) {
+    public void submitForm(SubjectHeading subject, String email, String reference, String message) {
+        fillInForm(subject, email, reference, message);
+        submitButton.click();
+    }
+
+    private void fillInForm(SubjectHeading subject, String email, String reference, String message) {
+        selectSubject(subject);
+        fillInEmail(email);
+        fillInReference(reference);
+        fillInMessage(message);
+    }
+
+    public void partiallyFillInForm(SubjectHeading subject, String email) {
+        fillInEmail(email);
+        selectSubject(subject);
+    }
+
+    private void selectSubject(SubjectHeading subject) {
         Select subjectHeading = new Select(select);
 
-        subjectHeading.selectByVisibleText(subject);
-        emailField.sendKeys(email);
-        orderReference.sendKeys(reference);
-        messageField.sendKeys(message);
+        switch(subject) {
+            case WEBMASTER:
+                subjectHeading.selectByVisibleText("Webmaster");
+            case CUSTOMER_SERVICE: default:
+                subjectHeading.selectByVisibleText("Customer service");
+        }
+    }
 
-        submitButton.click();
+    public boolean formErrorPresent() {
+        if(formError.isDisplayed()){
+            formErrorPresent = true;
+        }
+        return formErrorPresent;
+    }
+
+    private void fillInMessage(String message) {
+        messageField.clear();
+        messageField.sendKeys(message);
+    }
+
+    private void fillInReference(String reference) {
+        orderReference.clear();
+        orderReference.sendKeys(reference);
+    }
+
+    private void fillInEmail(String email) {
+        emailField.clear();
+        emailField.sendKeys(email);
     }
 
     public String getSuccessMessage() {
         return successMessage.getText();
     }
 
-
-
-
-
+    public String getErrorMessage() {
+        return error.getText();
+    }
 }

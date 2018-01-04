@@ -49,8 +49,10 @@ public class WishListPage {
             wait.until(ExpectedConditions.alertIsPresent());
             driver.switchTo().alert().accept();
             wait.until(ExpectedConditions.not(ExpectedConditions.alertIsPresent()));
+            waitForJavaScriptToLoad();
             driver.navigate().refresh();
             waitForJavaScriptToLoad();
+
         } else {
             throw new NoSuchElementException("The wishlist you want to delete does not exist!");
         }

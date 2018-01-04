@@ -9,7 +9,6 @@ import pages.HomePage;
 public class FillInContactFormTest extends TestShopScenario{
 
     // VARIABLES
-    private String SUBJECT = "Customer service";
     private String EMAIL = "bootcamper@feelthepain.com";
     private String ORDER_REFERENCE = "4321234";
     private String MESSAGE = "Ipod defect while lifting, need new one";
@@ -22,12 +21,18 @@ public class FillInContactFormTest extends TestShopScenario{
     @Test
     public void fillInContactForm() {
         homePage = new HomePage(driver);
-        contactUsPage = homePage.goToContactUsPage();
-        contactUsPage.submitForm(
-                SUBJECT,
-                EMAIL,
-                ORDER_REFERENCE,
-                MESSAGE);
+
+        if(homePage.isLoggedIn()) {
+            homePage.signOut();
+        }
+
+        ContactUsPage contactUsPage =
+                homePage.goToContactUsPage()
+                        .selectSubject(ContactUsPage.SubjectHeading.CUSTOMER_SERVICE)
+                        .fillInEmail(EMAIL)
+                        .fillInReference(ORDER_REFERENCE)
+                        .fillInMessage(MESSAGE)
+                        .submitForm();
 
         Assertions.assertThat(
                 contactUsPage.getSuccessMessage())

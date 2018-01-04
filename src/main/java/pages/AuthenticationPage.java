@@ -5,10 +5,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class AuthenticationPage {
-
-    private WebDriver driver;
-
+public class AuthenticationPage extends BasePage {
+    
     @FindBy(id="email")
     private WebElement email;
 
@@ -18,8 +16,11 @@ public class AuthenticationPage {
     @FindBy(id="SubmitLogin")
     private WebElement signInButton;
 
+    @FindBy(className = "alert-danger")
+    private WebElement error;
+
     public AuthenticationPage(WebDriver driver) {
-        this.driver = driver;
+        super.driver = driver;
         PageFactory.initElements(driver, this);
     }
 
@@ -28,5 +29,24 @@ public class AuthenticationPage {
         this.password.sendKeys(password);
         signInButton.click();
         return new MyAccountPage(driver);
+    }
+
+    public AuthenticationPage fillInEmail(String email) {
+        this.email.sendKeys(email);
+        return this;
+    }
+    
+    public AuthenticationPage fillInPassword(String password) {
+        this.password.sendKeys(password);
+        return this;
+    }
+    
+    public AuthenticationPage submitIncorrectLogin() {
+        signInButton.click();
+        return this;
+    }
+
+    public String getErrorMessage() {
+        return error.getText();
     }
 }

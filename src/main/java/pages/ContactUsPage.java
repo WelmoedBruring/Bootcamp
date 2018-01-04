@@ -6,9 +6,15 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
-public class ContactUsPage {
+public class ContactUsPage extends BasePage {
 
-    private WebDriver driver;
+    public enum SubjectHeading {
+        CUSTOMER_SERVICE,
+        WEBMASTER;
+    }
+
+    @FindBy(css = ".alert.alert-danger")
+    private WebElement error;
 
     @FindBy(id="id_contact")
     private WebElement select;
@@ -28,28 +34,54 @@ public class ContactUsPage {
     @FindBy(className = "alert-success")
     private WebElement successMessage;
 
+    @FindBy(css = ".form-error")
+    private WebElement formError;
+
     public ContactUsPage(WebDriver driver) {
-        this.driver = driver;
+        super.driver = driver;
         PageFactory.initElements(driver, this);
     }
 
-    public void submitForm(String subject, String email, String reference, String message) {
+    public ContactUsPage submitForm() {
+        submitButton.click();
+        return this;
+    }
+
+    public ContactUsPage clearForm() {
+        emailField.clear();
+        messageField.clear();
+        orderReference.clear();
+        return this;
+    }
+
+    public ContactUsPage selectSubject(SubjectHeading subject) {
         Select subjectHeading = new Select(select);
 
-        subjectHeading.selectByVisibleText(subject);
-        emailField.sendKeys(email);
-        orderReference.sendKeys(reference);
-        messageField.sendKeys(message);
+        switch(subject) {
+            case WEBMASTER:
+                subjectHeading.selectByVisibleText("Webmaster");
+            case CUSTOMER_SERVICE: default:
+                subjectHeading.selectByVisibleText("Customer service");
+        }
+        return this;
+    }
 
-        submitButton.click();
+    public ContactUsPage fillInMessage(String message) {
+        messageField.sendKeys(message);
+        return this;
+    }
+
+    public ContactUsPage fillInReference(String reference) {
+        orderReference.sendKeys(reference);
+        return this;
+    }
+
+    public ContactUsPage fillInEmail(String email) {
+        emailField.sendKeys(email);
+        return this;
     }
 
     public String getSuccessMessage() {
         return successMessage.getText();
     }
-
-
-
-
-
 }

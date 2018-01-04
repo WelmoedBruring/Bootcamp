@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import pages.HomePage;
 
 
 public class TestShopScenario {
@@ -22,6 +23,11 @@ public class TestShopScenario {
 
         // Open the website
         driver.get(URL);
+
+        HomePage homePage = new HomePage(driver);
+        if(homePage.isLoggedIn()) {
+            homePage.signOut();
+        }
     }
 
     @AfterMethod

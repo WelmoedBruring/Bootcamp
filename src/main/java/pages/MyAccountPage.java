@@ -7,23 +7,27 @@ import org.openqa.selenium.support.PageFactory;
 
 public class MyAccountPage extends BasePage {
 
-    private WebDriver driver;
-
     @FindBy(css = ".icon-heart")
     private WebElement wishListButton;
 
     public MyAccountPage(WebDriver driver) {
-        this.driver = driver;
-        PageFactory.initElements(driver, this);
+        super.driver = driver;
+        PageFactory.initElements(super.driver, this);
     }
 
-    /**
-     * Navigates to the Wish List Page
-     * @return New WishListPage
-     */
-    public WishListPage goToWishLists() {
+    public WishListPage goToWishListPage() {
         wishListButton.click();
         return new WishListPage(driver);
+    }
+
+    @Deprecated
+    /**
+     * Navigates to the Wish List Page
+     * @return New OLD_WishListPage
+     */
+    public OLD_WishListPage goToOLDWishListsPage() {
+        wishListButton.click();
+        return new OLD_WishListPage(driver);
     }
 }
 

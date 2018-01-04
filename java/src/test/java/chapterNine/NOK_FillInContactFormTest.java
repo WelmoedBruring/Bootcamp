@@ -16,26 +16,40 @@ public class NOK_FillInContactFormTest extends TestShopScenario {
     private String EMAIL_CORRECT_FORMAT = "nope@correct.com";
 
     @Test
-    public void submitContactWithIncorrectEmailFormatTest() {
+    public void submitContactFormWithIncorrectEmailFormatTest() {
         homePage = new HomePage(driver);
 
         if(homePage.isLoggedIn()) {
             homePage.signOut();
         }
 
-        ContactUsPage contactUsPage = homePage.goToContactUsPage();
-        contactUsPage.submitForm(
-                CUSTOMER_SERVICE,
-                EMAIL_INCORRECT_FORMAT,
-                "4321234",
-                "Help!");
-        Assertions.assertThat(contactUsPage.getErrorMessage()).contains("Invalid email address.");
+        ContactUsPage contactUsPage =
+                homePage.goToContactUsPage()
+                        .selectSubject(CUSTOMER_SERVICE)
+                        .fillInEmail(EMAIL_INCORRECT_FORMAT)
+                        .fillInReference("4321234")
+                        .fillInMessage("Help!")
+                        .submitForm();
 
-        contactUsPage.submitForm(
-                CUSTOMER_SERVICE,
-                EMAIL_CORRECT_FORMAT,
-                "4321234",
-                "Help!");
+        Assertions.assertThat(contactUsPage.getErrorMessage()).contains("Invalid email address.");
+    }
+
+    @Test
+    private void submitContactFormWithCorrectEmailFormatTest() {
+        homePage = new HomePage(driver);
+
+        if(homePage.isLoggedIn()) {
+            homePage.signOut();
+        }
+
+        ContactUsPage contactUsPage =
+                homePage.goToContactUsPage()
+                        .selectSubject(CUSTOMER_SERVICE)
+                        .fillInEmail(EMAIL_CORRECT_FORMAT)
+                        .fillInReference("4321234")
+                        .fillInMessage("Help!")
+                        .submitForm();
+
         Assertions.assertThat(contactUsPage.getSuccessMessage()).contains(
                 "Your message has been successfully sent to our team.");
     }

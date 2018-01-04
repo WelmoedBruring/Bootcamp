@@ -8,8 +8,6 @@ import org.openqa.selenium.support.ui.Select;
 
 public class ContactUsPage extends BasePage {
 
-    private boolean formErrorPresent;
-
     public enum SubjectHeading {
         CUSTOMER_SERVICE,
         WEBMASTER;
@@ -44,24 +42,19 @@ public class ContactUsPage extends BasePage {
         PageFactory.initElements(driver, this);
     }
 
-    public void submitForm(SubjectHeading subject, String email, String reference, String message) {
-        fillInForm(subject, email, reference, message);
+    public ContactUsPage submitForm() {
         submitButton.click();
+        return this;
     }
 
-    private void fillInForm(SubjectHeading subject, String email, String reference, String message) {
-        selectSubject(subject);
-        fillInEmail(email);
-        fillInReference(reference);
-        fillInMessage(message);
+    public ContactUsPage clearForm() {
+        emailField.clear();
+        messageField.clear();
+        orderReference.clear();
+        return this;
     }
 
-    public void partiallyFillInForm(SubjectHeading subject, String email) {
-        fillInEmail(email);
-        selectSubject(subject);
-    }
-
-    private void selectSubject(SubjectHeading subject) {
+    public ContactUsPage selectSubject(SubjectHeading subject) {
         Select subjectHeading = new Select(select);
 
         switch(subject) {
@@ -70,35 +63,25 @@ public class ContactUsPage extends BasePage {
             case CUSTOMER_SERVICE: default:
                 subjectHeading.selectByVisibleText("Customer service");
         }
+        return this;
     }
 
-    public boolean formErrorPresent() {
-        if(formError.isDisplayed()){
-            formErrorPresent = true;
-        }
-        return formErrorPresent;
-    }
-
-    private void fillInMessage(String message) {
-        messageField.clear();
+    public ContactUsPage fillInMessage(String message) {
         messageField.sendKeys(message);
+        return this;
     }
 
-    private void fillInReference(String reference) {
-        orderReference.clear();
+    public ContactUsPage fillInReference(String reference) {
         orderReference.sendKeys(reference);
+        return this;
     }
 
-    private void fillInEmail(String email) {
-        emailField.clear();
+    public ContactUsPage fillInEmail(String email) {
         emailField.sendKeys(email);
+        return this;
     }
 
     public String getSuccessMessage() {
         return successMessage.getText();
-    }
-
-    public String getErrorMessage() {
-        return error.getText();
     }
 }

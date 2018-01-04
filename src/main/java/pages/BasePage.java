@@ -9,6 +9,10 @@ import org.openqa.selenium.support.FindBy;
 public class BasePage {
 
     protected WebDriver driver;
+    private boolean formErrorPresent;
+
+    @FindBy(className = "form-error")
+    private WebElement formError;
 
     @FindBy(id="contact-link")
     private WebElement contactButton;
@@ -41,4 +45,14 @@ public class BasePage {
         return new ContactUsPage(driver);
     }
 
+    public boolean formErrorPresent() {
+        if(formError.isDisplayed()){
+            formErrorPresent = true;
+        }
+        return formErrorPresent;
+    }
+
+    public String getErrorMessage() {
+        return formError.getText();
+    }
 }

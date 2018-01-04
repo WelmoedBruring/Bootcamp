@@ -1,18 +1,20 @@
 package pages;
 
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 
-public class WishListPage {
+public class WishListPage extends BasePage {
 
-    private WebDriver driver;
-    private WebDriverWait wait;
+    @FindBy(className = "table-bordered")
+    public WebElement wishListTable;
 
     @FindBy(css = "#name")
     private WebElement textbox;
@@ -21,83 +23,70 @@ public class WishListPage {
     private WebElement saveButton;
 
     public WishListPage(WebDriver driver) {
-        this.driver = driver;
-        PageFactory.initElements(driver, this);
-        wait = new WebDriverWait(driver, 15);
+        super.driver = driver;
+        PageFactory.initElements(super.driver, this);
     }
 
-    /**
-     * Adds a wishList to the table of wishLists
-     * @param listToAdd Name of the wishList to add
-     */
-    public void addWishList(String listToAdd) {
-        textbox.sendKeys(listToAdd);
-        saveButton.click();
-        driver.navigate().refresh();
-    }
-
-    /**
-     * Deletes a given wishList from the table of wishLists.
-     * @param listToDelete Name of the wishList to delete
-     */
-    public void deleteWishList(String listToDelete) {
-        int index = findWishList(listToDelete);
-        if (index > 0) {
-            WebElement deleteButton = driver.findElement(By.xpath(
-                    "(//tbody/tr)[" + (index) + "]/td[@class='wishlist_delete']/a"));
-            deleteButton.click();
-            wait.until(ExpectedConditions.alertIsPresent());
-            driver.switchTo().alert().accept();
-            wait.until(ExpectedConditions.not(ExpectedConditions.alertIsPresent()));
-            waitForJavaScriptToLoad();
-            driver.navigate().refresh();
-            waitForJavaScriptToLoad();
-
-        } else {
-            throw new NoSuchElementException("The wishlist you want to delete does not exist!");
+    public WishListPage deleteWishList(String listToDelete) {
+        if(!hasWishList(listToDelete)) {
+            throw new NoSuchElementException("The target wish list does not exist!");
         }
-    }
 
-    /**
-     * Checks whether the wishList passed as parameter is present in the table
-     * @param wishList String wishList to look for
-     * @return 0 if the wishList was not found, index > 0 if the wishList was found
-     */
-    public int findWishList(String wishList) {
-        int index = 0;  // Index is initialized at 0; if returned with value 0 it means that the wish list was not found
-        int numberOfRows = getRows();
-        // For each row i in the table body, check if it contains the name of the argument wish list
-        for (int i = 0; i < numberOfRows; i++) {
-            WebElement row = driver.findElement(By.xpath("(//tbody/tr)[" + (i + 1) + "]"));
-            if (row.getText().contains(wishList)) {
-                index = i + 1; // +1 Because xpath is not 0-based
+        int rowIndex;
+
+        // For each row in the list of rows in the table...
+        for (WebElement row : getRows()) {
+            rowIndex = getRows().indexOf(row);
+            System.out.println("Row " + rowIndex + "= " + row.getText());
+
+            // ... check if it contains the target wish list. If it does...
+            if(row.getText().contains(listToDelete)) {
+                int columnIndex;
+
+                // ... search the columns for the one with the delete-buttons. If found...
+                for (WebElement column : getColumns()) {
+                    columnIndex = getColumns().indexOf(column);
+
+                    //... go to the delete-button in the row with the target wish list and delete it.
+                    if(column.getText().equals("Delete")) {
+                        System.out.println(wishListTable.findElement(By.xpath(
+                                "//tbody/tr[" + (rowIndex + 1) + "]/td[" + (columnIndex + 1) + "]")));
+                        wishListTable.findElement(By.xpath(
+                                "//tbody/tr[" + (rowIndex + 1) + "]/td[" + (columnIndex + 1) + "]/a")).click();
+                        break;
+                    }
+                }
                 break;
             }
         }
-        return index;
+
+        // Wait for the alert and confirm the deletion of the target wish list
+        WebDriverWait wait = new WebDriverWait(driver, 15);
+        wait.until(ExpectedConditions.alertIsPresent());
+        driver.switchTo().alert().accept();
+        wait.until(ExpectedConditions.not(ExpectedConditions.alertIsPresent()));
+        driver.navigate().refresh();
+
+        return this;
     }
 
-    /**
-     * Counts the number of rows in the table by putting all rows in a list and returning the size of the list
-     * @return int number of rows (size of the list.
-     */
-    public int getRows() {
-        List<WebElement> rows = driver.findElements(By.xpath("//tbody/tr"));
-        System.out.println("There are " + rows.size() + " rows");
-        return rows.size();
+    public WishListPage createWishList(String listToCreate) {
+        textbox.sendKeys(listToCreate);
+        saveButton.click();
+        driver.navigate().refresh();
+        return this;
     }
 
-    public boolean waitForJavaScriptToLoad() {
-        WebDriverWait wait = new WebDriverWait(driver, 30);
+    public boolean hasWishList(String targetList) {
+        return wishListTable.getText().contains(targetList);
+    }
 
-        ExpectedCondition<Boolean> jsLoad = new ExpectedCondition<Boolean>() {
-            @Override
-            public Boolean apply(WebDriver driver) {
-                return ((JavascriptExecutor) driver).executeScript("return document.readyState")
-                        .toString().equals("complete");
-            }
-        };
+    public List<WebElement> getRows() {
+        return wishListTable.findElements(By.xpath("//tbody/tr"));
+    }
 
-        return wait.until(jsLoad);
+    public List<WebElement> getColumns() {
+        return wishListTable.findElements(By.xpath("//th"));
     }
 }
+

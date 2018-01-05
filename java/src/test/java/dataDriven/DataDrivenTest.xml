@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+<suite name="Suite" parallel="none">
+    <test name="ChromeTest">
+        <parameter name="browser" value="CHROME" />
+        <parameter name="email" value="hoi@doei.com"/>
+        <parameter name="subject" value="CUSTOMER_SERVICE"/>
+        <parameter name="reference" value="123"/>
+        <parameter name="message" value="Help!"/>
+        <classes>
+            <class name="dataDriven.DataDrivenContactFormTest" />
+        </classes>
+    </test>
+</suite>

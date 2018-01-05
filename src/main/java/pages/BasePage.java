@@ -11,8 +11,14 @@ public class BasePage {
     protected WebDriver driver;
     private boolean formErrorPresent;
 
+    @FindBy(className = "alert-danger")
+    private WebElement error;
+
     @FindBy(className = "form-error")
     private WebElement formError;
+
+    @FindBy(className = "form-ok")
+    private WebElement formOK;
 
     @FindBy(id="contact-link")
     private WebElement contactButton;
@@ -46,13 +52,14 @@ public class BasePage {
     }
 
     public boolean formErrorPresent() {
-        if(formError.isDisplayed()){
-            formErrorPresent = true;
-        }
-        return formErrorPresent;
+        return formError.isDisplayed();
     }
 
     public String getErrorMessage() {
-        return formError.getText();
+        return error.getText();
+    }
+
+    public boolean formOKPresent() {
+        return formOK.isDisplayed();
     }
 }

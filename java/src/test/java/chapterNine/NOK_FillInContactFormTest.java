@@ -35,7 +35,7 @@ public class NOK_FillInContactFormTest extends TestShopScenario {
     }
 
     @Test
-    private void submitContactFormWithCorrectEmailFormatTest() {
+    public void submitContactFormWithCorrectEmailFormatTest() {
         homePage = new HomePage(driver);
 
         if(homePage.isLoggedIn()) {

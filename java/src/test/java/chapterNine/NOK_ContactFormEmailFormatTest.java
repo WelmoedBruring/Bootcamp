@@ -46,6 +46,6 @@ public class NOK_ContactFormEmailFormatTest extends TestShopScenario {
                         .fillInEmail(EMAIL_CORRECT_FORMAT)
                         .selectSubject(CUSTOMER_SERVICE);
 
-        Assertions.assertThat(!contactUsPage.formErrorPresent());
+        Assertions.assertThat(contactUsPage.formOKPresent());
     }
 }
